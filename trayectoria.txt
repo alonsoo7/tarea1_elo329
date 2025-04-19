@@ -1,0 +1,4 @@
+hei, paa, deg
+hallo, du
+hei,ije,ok
+tid,tid,tid

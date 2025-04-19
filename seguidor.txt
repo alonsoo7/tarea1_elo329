@@ -1,1 +1,2 @@
-Formato: (Nombre) + | (Topico) | (Mensaje)
+Formato: (Nombre) (Topico) (Mensaje)
+
