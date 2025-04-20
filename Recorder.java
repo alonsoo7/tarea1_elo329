@@ -1,23 +1,16 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.PrintStream;
+import java.util.Scanner;
 
 public class Recorder extends Subscriber {
-
-    private PrintWriter writer;
-
-    public Recorder(String name, String topicName) {
-        super(name, topicName);
-        try {
-            writer = new PrintWriter(new FileWriter("trayectoria.txt", true));
-        } catch (IOException e) {
-            System.err.println("Error opening trayectoria.txt: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(String message) {
-        writer.println(message);  
-        writer.flush();
-    }
-}
+    private PrintStream out;
+   protected Recorder() {}  // to ban calls to this constructor.
+   public Recorder(String name, String topicName, PrintStream out) {
+      super(name, topicName);
+      this.out = out;
+   }
+   public void update(String message) {
+      Scanner in = new Scanner(message);
+      out.println(getName()+","+getTopicName()+","+in.nextInt()+","+in.nextInt());
+   }
+   
+} 
