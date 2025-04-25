@@ -34,20 +34,28 @@ public class T1Stage3 {
       component = in.next();  
       componentName = in.next();
       topicName = in.next(); 
-      if(component.equals("streamer")) { 
+      if(component.equals("publicador")) { 
          streamer = new Publisher(componentName, broker, topicName);
          streamerName = componentName;
+      } else {
+         System.out.println("Error: El primer componente debe ser un publicador");
       }
       
       // extraer informacion del primer seguidor
       component = in.next(); 
+      String componentType = in.next(); 
       componentName = in.next();
-      topicName = in.next(); 
+      topicName = in.next();
       fileName = in.next();
+
       try {
-         if (component.equals("seguidor")) {
-            Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
-            broker.subscribe(follower);
+         if (component.equals("suscriptor")) {
+            if(componentType.equals("Seguidor")) {
+               Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
+               broker.subscribe(follower);
+            } else {
+               System.out.println("Error: El segundo componente debe ser un seguidor en Stage3");
+            }
          }
       } catch (FileNotFoundException e) {
          e.printStackTrace();
@@ -57,13 +65,19 @@ public class T1Stage3 {
       
       // extraer informacion del segundo seguidor
       component = in.next(); 
+      String componentType2 = in.next(); 
       componentName = in.next();
-      topicName = in.next(); 
+      topicName = in.next();
       fileName = in.next();
+      
       try {
-         if (component.equals("seguidor")) {
-            Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
-            broker.subscribe(follower);
+         if (component.equals("suscriptor")) {
+            if(componentType2.equals("Seguidor")) {
+               Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
+               broker.subscribe(follower);
+            } else {
+               System.out.println("Error: El tercer componente debe ser un seguidor en Stage3");
+            }
          }
       } catch (FileNotFoundException e) {
          e.printStackTrace();
