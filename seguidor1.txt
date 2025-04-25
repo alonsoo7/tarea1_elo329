@@ -1,1 +1,2 @@
-Seguidor_1,Notificaciones_1,Nueva actualizacion disponible!
+Seguidor1 Notificaciones holas 
+Seguidor1 Notificaciones hola caracola 

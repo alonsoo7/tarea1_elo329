@@ -11,8 +11,8 @@ public class Follower extends Subscriber {
 
     @Override
     public void update(String message) {
-        // Al llegar un mensaje, lo guardamos con formato CSV simple
+        // Guardamos en formato CSV: nombre,topic,mensaje
         out.println(getName() + "," + getTopicName() + "," + message);
-        out.flush();  // fuerza el volcado inmediato
+        out.flush();
     }
 }
