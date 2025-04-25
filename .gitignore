@@ -1,0 +1,9 @@
+# Ignorar archivos compilados
+*.class
+
+# Ignorar archivos específicos
+# makefile
+
+# Ignorar logs y archivos temporales
+*.log
+*~ 
