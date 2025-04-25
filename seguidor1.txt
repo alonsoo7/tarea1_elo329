@@ -1,3 +1,1 @@
-Formato: (Nombre) (Topico) (Mensaje)
-Seguidor1 Notificaciones hola pibes 
-Seguidor1 Notificaciones buenas!! hola!! hola! 
+Seguidor_1,Notificaciones_1,Nueva actualizacion disponible!

@@ -1,24 +1,29 @@
 import java.util.ArrayList;
 
 public class Topic {
-   protected Topic(){ // to ban calls to this constructor 
+    private String topicName;
+    private ArrayList<Subscriber> subscribers;
 
-   }
-   public Topic(String topicName) {
-      this.topicName = topicName;
-      this.subscribers = new ArrayList<Subscriber>();
-   }
-   public void subscribe(Subscriber sub){
-      this.subscribers.add(sub);
-   }
-   public void notify(String message) {
-      for (Subscriber sub : this.subscribers) {
-         sub.update(message);
-      }
-   }
-   public boolean hasThisName(String name) {
-      return topicName.equals(name);
-   }
-   private String topicName;
-   private ArrayList<Subscriber> subscribers;
-} 
+    // Constructor
+    public Topic(String topicName) {
+        this.topicName = topicName;
+        this.subscribers = new ArrayList<>();
+    }
+
+    // Agrega un suscriptor
+    public void subscribe(Subscriber sub) {
+        subscribers.add(sub);
+    }
+
+    // Notifica a todos los suscriptores
+    public void notify(String message) {
+        for (Subscriber sub : subscribers) {
+            sub.update(message);
+        }
+    }
+
+    // Comparar nombres
+    public boolean hasThisName(String name) {
+        return this.topicName.equals(name);
+    }
+}
