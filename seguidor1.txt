@@ -1,3 +1,2 @@
-Formato: (Nombre) (Topico) (Mensaje)
-Seguidor1 Notificaciones hola 
-Seguidor1 Notificaciones como estas 
+Seguidor1 Notificaciones holas 
+Seguidor1 Notificaciones hola caracola 

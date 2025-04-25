@@ -1,3 +1,3 @@
-publicador MiStreamer Notificaciones
 suscriptor Seguidor Seguidor1 Notificaciones seguidor1.txt
-suscriptor Seguidor Seguidor2 Notificaciones seguidor2.txt 
+suscriptor Seguidor Seguidor2 Notificaciones seguidor2.txt
+publicador MiStreamer Notificaciones
