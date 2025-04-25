@@ -11,7 +11,7 @@ public class Publisher extends Component {
       try {
           topic.notify(message);
       } catch (Exception e) {
-          System.err.println("Error al publicar mensaje en topic: " + e.getMessage());
+          System.err.println("Error al publicar mensaje en topic. Asegurate que son coordenadas validas (x,y) " + e.getMessage());
       }
   }
 
