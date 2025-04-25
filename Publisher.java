@@ -9,9 +9,9 @@ public class Publisher extends Component {
 
    protected void publishNewEvent(String message) {
       try {
-          topic.notify(message);
+        topic.notify(message);
       } catch (Exception e) {
-          System.err.println("Error al publicar mensaje en topic: " + e.getMessage());
+        System.err.println("Error al publicar mensaje en topic. Asegurate que son coordenadas validas (x,y) " + e.getMessage());
       }
   }
 

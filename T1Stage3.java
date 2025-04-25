@@ -10,71 +10,92 @@ public class T1Stage3 {
             System.exit(-1);
         }
         
-      Scanner in = null;
-      try {
-         in = new Scanner(new File(args[0]));
-      } catch (FileNotFoundException e) {
-         e.printStackTrace();
-         System.out.println("File: " + args[0]);
-         System.exit(-1);
-      }
+      String configFile = args[0];
       T1Stage3 stage = new T1Stage3();
-      stage.setupSimulator(in);
+      stage.setupSimulator(configFile);
       stage.runSimulation();
    }
 
-   public void setupSimulator(Scanner in) {  // create main objects from configuration file
+   public void setupSimulator(String configFile) {  // create main objects from configuration file
       broker = new Broker();
-      String component;
-      String componentName;
-      String topicName;
-      String fileName;
+      Scanner in = null;
+      String publisherTopic = ""; // SE GUARDA EL TOPICO DEL PUBLICADOR PARA COMPARARLO CON EL DE LOS SUSCRIPTORS
       
-      // Configurar el streamer
-      component = in.next();  
-      componentName = in.next();
-      topicName = in.next(); 
-      if(component.equals("streamer")) { 
-         streamer = new Publisher(componentName, broker, topicName);
-         streamerName = componentName;
-      }
-      
-      // extraer informacion del primer seguidor
-      component = in.next(); 
-      componentName = in.next();
-      topicName = in.next(); 
-      fileName = in.next();
+      // SOLO EL PUBLICADOR
       try {
-         if (component.equals("seguidor")) {
-            Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
-            broker.subscribe(follower);
+         in = new Scanner(new File(configFile));
+         boolean publicadorEncontrado = false;
+         
+         while (in.hasNext() && !publicadorEncontrado) {
+            String component = in.next();
+            if (component.equals("publicador")) {
+               String componentName = in.next();
+               String topicName = in.next();
+               publisherTopic = topicName; // Guardar el tópico para usarlo con los suscriptores
+               streamer = new Publisher(componentName, broker, topicName);
+               streamerName = componentName;
+               publicadorEncontrado = true;
+            } else {
+               // saltamos los datos de los suscriptores
+               in.next(); // componentType
+               in.next(); // componentName
+               in.next(); // topicName
+               in.next(); // fileName
+            }
          }
+         if(!publicadorEncontrado){
+            System.out.println("Error: No hay publicador en el archivo. Se requiere un publicador para Stage3");
+            System.exit(-1);
+         }
+         in.close();
       } catch (FileNotFoundException e) {
          e.printStackTrace();
-         System.out.println("File: " + fileName);
          System.exit(-1);
       }
       
-      // extraer informacion del segundo seguidor
-      component = in.next(); 
-      componentName = in.next();
-      topicName = in.next(); 
-      fileName = in.next();
+      // LOS DOS SUSCRIPTORES
       try {
-         if (component.equals("seguidor")) {
-            Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
-            broker.subscribe(follower);
+         in = new Scanner(new File(configFile));
+         int subsEncontrados = 0;
+         
+         while (in.hasNext() && subsEncontrados < 2) {
+            String component = in.next();
+            if (component.equals("suscriptor")) {
+               String componentType = in.next();
+               String componentName = in.next();
+               String topicName = in.next();
+               String fileName = in.next();
+
+               // forzar que sea seguidor, es necesario para stage3
+               if (componentType.equals("Seguidor")) {
+                  // forzar que los topicos sean iguales, se pide en el enunciado
+                  if (topicName.equals(publisherTopic)) {
+                     Follower follower = new Follower(componentName, topicName, new PrintStream(fileName));
+                     broker.subscribe(follower);
+                     subsEncontrados++;
+                  } else {
+                     System.out.println("Error: Al menos un subscriptor no está suscrito al topic del publicador.");
+                     System.exit(-1);
+                  }
+               } else {
+                  System.out.println("Error: El suscriptor debe ser de tipo Seguidor en Stage3");
+               }
+            } else {
+               // saltamos los datos de los suscriptores
+               in.next(); // componentName
+               in.next(); // topicName
+            }
          }
+         in.close();
       } catch (FileNotFoundException e) {
          e.printStackTrace();
-         System.out.println("File: " + fileName);
          System.exit(-1);
       }
    }
    
    public void runSimulation() {
       System.out.println("STREAMER DISPONIBLE: " + streamerName);
-      System.out.println("FORMATO DE USO: \"(streamer) (mensaje string)\"");
+      System.out.println("FORMATO DE USO: \"(streamer) (mensaje string)\"\n");
       
       Scanner inputEvent = new Scanner(System.in);
       while (inputEvent.hasNextLine()) {
