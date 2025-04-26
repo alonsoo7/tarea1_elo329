@@ -7,9 +7,14 @@ public class Publisher extends Component {
        this.topic = broker.createTopic(topicName);
     }
  
+    @Override
+    public void addTopic(String topic) {
+         // solo para evitar que se ponga mas topico. no hace nada
+    }
+ 
     protected void publishNewEvent(String message) {
        try {
-         topic.notify(message);
+         topic.notify(message, topicName);
        } catch (Exception e) {
          System.err.println("Error al publicar mensaje en topic. Asegurate que son coordenadas validas (x,y) o que el mensaje es correcto: " + e.getMessage());
        }

@@ -1,12 +1,13 @@
+
 public abstract class Subscriber extends Component {
 
-
-   protected Subscriber() {}  // to ban calls to this constructor.
+   protected Subscriber() {
+      super();
+   }  
+   
    public Subscriber(String name, String topicName) {
-      this.name = name;
-      this.topicName = topicName;
-      
+      super(name, topicName);
    }
 
-   public abstract void update(String message);
+   public abstract void update(String message, String fromTopic);
 }

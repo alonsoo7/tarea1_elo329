@@ -17,10 +17,15 @@ public class Broker {
    }
 
    public boolean subscribe(Subscriber sub){
+      // Suscribir al tópico principal (para compatibilidad)
       String topicName = sub.getTopicName();
-      Topic topic;
-
-      if ((topic=findTopic(topicName))!=null) { // si el topico existe suscribe
+      return subscribeToTopic(sub, topicName);
+   }
+   
+   public boolean subscribeToTopic(Subscriber sub, String topicName){
+      Topic topic = findTopic(topicName);
+      
+      if (topic != null) { // si el tópico existe, suscribe
          topic.subscribe(sub);
          return true;
       } else 

@@ -12,7 +12,7 @@ public class Monitor extends Subscriber {
     }
 
     @Override
-    public void update(String message) {
+    public void update(String message, String fromTopic) {
         // 1. Parsear coordenadas
         Scanner sc = new Scanner(message);
         if (!sc.hasNextInt()) {
@@ -32,10 +32,8 @@ public class Monitor extends Subscriber {
 
         // 3. Si supera 500, escribir en el archivo
         if (distancia > 500 && 500 >= y && 500 >= x && 0 <= y && 0 <= x) {
-            // getName() y getTopicName() vienen de Component
-            out.println(getName() + "," + getTopicName() + "," + x + "," + y);
-        } else {
-            
+            // getName() viene de Component
+            out.println(getName() + "," + fromTopic + "," + x + "," + y);
         }
     }
 }

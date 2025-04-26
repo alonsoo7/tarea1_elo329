@@ -2,13 +2,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Simulador {
     private Broker broker;
     private List<Publisher> publishers;
     private List<Subscriber> subscribers;
+    private Map<String, Subscriber> subscriberMap;
     
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -27,13 +30,14 @@ public class Simulador {
         broker = new Broker();
         publishers = new ArrayList<>();
         subscribers = new ArrayList<>();
+        subscriberMap = new HashMap<>();
         
         // Primera lectura: SOLO PUBLICADORES
         try {
             Scanner in = new Scanner(new File(configFile));
             
             while (in.hasNext()) {
-                String tipo = in.next();  // "publicador" o "suscriptor"
+                String tipo = in.next();
                 if (tipo.equals("publicador")) {
                     String name = in.next();
                     String topicName = in.next();
@@ -65,24 +69,41 @@ public class Simulador {
                     String name    = conf.next();
                     String topic   = conf.next();
                     String fileOut = conf.next();
-                    try {
-                        PrintStream out = new PrintStream(fileOut);
-                        Subscriber sub = null;
-                        if (subType.equals("Seguidor")) {
-                            sub = new Follower(name, topic, out);
-                        } else if (subType.equals("Registrador")) {
-                            sub = new Recorder(name, topic, out);
-                        } else if (subType.equals("Monitor")) {
-                            sub = new Monitor(name, topic, out);
+                    
+                    // Comprobamos si ya existe un suscriptor con este nombre
+                    Subscriber sub = subscriberMap.get(name);
+                    
+                    if (sub == null) {
+                        // No existe, creamos uno nuevo
+                        try {
+                            PrintStream out = new PrintStream(fileOut);
+                            
+                            if (subType.equals("Seguidor")) {
+                                sub = new Follower(name, topic, out);
+                            } else if (subType.equals("Registrador")) {
+                                sub = new Recorder(name, topic, out);
+                            } else if (subType.equals("Monitor")) {
+                                sub = new Monitor(name, topic, out);
+                            }
+                            
+                            if (sub != null && broker.subscribe(sub)) {
+                                subscribers.add(sub);
+                                subscriberMap.put(name, sub); // Guardamos para referencia futura
+                            } else {
+                                System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                            }
+                        } catch (FileNotFoundException e) {
+                            System.out.println("No se puede crear archivo: " + fileOut);
+                            System.exit(-1);
                         }
-                        if (sub != null && broker.subscribe(sub)) {
-                            subscribers.add(sub);
+                    } else {
+                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo tópico
+                        sub.addTopic(topic);
+                        if (broker.subscribeToTopic(sub, topic)) {
+                            // Éxito al suscribir al nuevo tópico
                         } else {
-                            System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                            System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
                         }
-                    } catch (FileNotFoundException e) {
-                        System.out.println("No se puede crear archivo: " + fileOut);
-                        System.exit(-1);
                     }
                 } else {
                     // Saltamos los datos de publicadores

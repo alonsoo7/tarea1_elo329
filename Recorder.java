@@ -8,9 +8,10 @@ public class Recorder extends Subscriber {
       super(name, topicName);
       this.out = out;
    }
-   public void update(String message) {
+   @Override
+   public void update(String message, String fromTopic) {
       Scanner in = new Scanner(message);
-      out.println(getName()+","+getTopicName()+","+in.nextInt()+","+in.nextInt());
+      out.println(getName()+","+fromTopic+","+in.nextInt()+","+in.nextInt());
    }
    
 } 

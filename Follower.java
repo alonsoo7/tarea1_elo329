@@ -6,8 +6,10 @@ public class Follower extends Subscriber {
       super(name, topicName);
       this.out = out;
    }
-   public void update(String message) {
-      out.println(name + " " + topicName + " " + message);
+   
+   @Override
+   public void update(String message, String fromTopic) {
+      out.println(name + " " + fromTopic + " " + message);
       out.flush();
    }
    

@@ -16,10 +16,15 @@ public class Topic {
     }
 
     // Notifica a todos los suscriptores
-    public void notify(String message) {
+    public void notify(String message, String fromTopic) {
         for (Subscriber sub : subscribers) {
-            sub.update(message);
+            sub.update(message, fromTopic);
         }
+    }
+
+    // Notifica a todos los suscriptores (para compatibilidad)
+    public void notify(String message) {
+        notify(message, this.topicName);
     }
 
     // Comparar nombres
