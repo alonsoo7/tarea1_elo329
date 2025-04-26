@@ -6,12 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.PrintStream;
+import java.util.Scanner;
+import java.util.Scanner;
+import java.io.PrintStream;
+
 
 public class Simulador {
     private Broker broker;
     private List<Publisher> publishers;
     private List<Subscriber> subscribers;
     private Map<String, Subscriber> subscriberMap;
+    // Para la parte extra: tiempo de arranque
+    private long startTime;
+
     
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -21,6 +29,8 @@ public class Simulador {
         
         String configFile = args[0];
         Simulador simulador = new Simulador();
+        // Guardamos el instante de inicio
+        simulador.startTime = System.currentTimeMillis();
         simulador.setupSimulator(configFile);
         simulador.runSimulation();
     }
@@ -95,6 +105,8 @@ public class Simulador {
                                 sub = new Recorder(name, topic, out);
                             } else if (subType.equals("Monitor")) {
                                 sub = new Monitor(name, topic, out);
+                            } else if (subType.equals("Contador")) {
+                                sub = new Contador(name, topic, out, this.startTime);
                             }
                             
                             if (sub != null && broker.subscribe(sub)) {
