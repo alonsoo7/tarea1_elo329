@@ -4,7 +4,11 @@ public class Publisher extends Component {
     
     public Publisher(String name, Broker broker, String topicName) {
        super(name, topicName);
-       this.topic = broker.createTopic(topicName);
+       if (broker.findTopic(topicName) == null) {
+          this.topic = broker.createTopic(topicName);
+       } else {
+          this.topic = broker.findTopic(topicName);
+       }
     }
  
     @Override

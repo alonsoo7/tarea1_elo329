@@ -49,18 +49,12 @@ public class Simulador {
                         System.out.println("Error: El publicador '" + name + "' ya está registrado. No se permiten duplicados");
                         System.exit(-1);
                     }
-                    
                     // Registrar el nombre del publicador para detectar duplicados
                     publisherNames.put(name, true);
                     
-                    // Verificar si ya existe un tópico con este nombre
-                    if (broker.findTopic(topicName) == null) {
-                        Publisher pub = new Publisher(name, broker, topicName);
-                        publishers.add(pub);
-                    } else {
-                        System.out.println("Error: El tópico '" + topicName + "' ya existe. No se permiten clonados");
-                        System.exit(-1);
-                    }
+                    Publisher pub = new Publisher(name, broker, topicName);
+                    publishers.add(pub);
+
                 } else {
                     // Saltamos los datos de suscriptores
                     in.next(); // subType
