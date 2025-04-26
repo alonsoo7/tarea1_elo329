@@ -49,7 +49,7 @@ Se ha creado un nuevo **Makefile** para este stage, lo que permite ejecutar el p
    - El funcionamiento será el mismo que con el Makefile.
 
 
-- A medida que un publicador, en este caso GPS publique las posiciones mediante entrada de consola, el Registrador almacenará esas posiciones en un archivo CSV, en este caso, trayectoria.txt
+- A medida que un publicador, en este caso GPS publique las posiciones mediante entrada de consola, el Registrador almacenará esas posiciones en un formato CSV (Nombre,Topico,CoordenadaX,CoordenadaY), en este caso, en el archivo trayectoria.txt
 
 ### Limpiar los Archivos Generados
 
