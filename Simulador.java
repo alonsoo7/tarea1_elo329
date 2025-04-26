@@ -94,7 +94,7 @@ public class Simulador {
                             
                             if (sub != null && broker.subscribe(sub)) {
                                 subscribers.add(sub);
-                                subscriberMap.put(name, sub); // Guardamos para referencia futura
+                                subscriberMap.put(name, sub);
                             } else {
                                 System.out.println("Error al suscribir " + name + " al topico " + topic + "Revisar el archivo de configuracion");
                                 System.exit(-1);
@@ -104,11 +104,13 @@ public class Simulador {
                             System.exit(-1);
                         }
                     } else {
-                        sub.addTopic(topic);
-                        if (broker.subscribeToTopic(sub, topic)) {
-                            // se suscribio al nuevo topico
-                        } else {
-                            System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                        if(!sub.getTopicNames().contains(topic)){ // manejar posible doble suscripcion a un mismo topico
+                            sub.addTopic(topic);
+                            if (broker.subscribeToTopic(sub, topic)) {
+                                // se suscribio al nuevo topico
+                            } else {
+                                System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                            }
                         }
                     }
                 } else {
@@ -131,7 +133,7 @@ public class Simulador {
             System.out.println(p.getName());
         }
         System.out.println("Simulador listo. Formato de evento:");
-        System.out.println("<PublisherName> <mensaje o coordenadas>");
+        System.out.println("<PublisherName> <mensaje o coordenadas X Y>");
         
         while (inputEvent.hasNextLine()) {
             String line = inputEvent.nextLine().trim();
