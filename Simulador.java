@@ -26,11 +26,13 @@ public class Simulador {
     }
         
     public void setupSimulator(String configFile) {
-
         broker = new Broker();
         publishers = new ArrayList<>();
         subscribers = new ArrayList<>();
         subscriberMap = new HashMap<>();
+        
+        // Mapa para controlar publicadores duplicados
+        Map<String, Boolean> publisherNames = new HashMap<>();
         
         // Primera lectura: SOLO PUBLICADORES
         try {
@@ -41,9 +43,24 @@ public class Simulador {
                 if (tipo.equals("publicador")) {
                     String name = in.next();
                     String topicName = in.next();
-                    // Crear y guardar el publisher
-                    Publisher pub = new Publisher(name, broker, topicName);
-                    publishers.add(pub);
+                    
+                    // Verificar si ya existe un publicador con este nombre
+                    if (publisherNames.containsKey(name)) {
+                        System.out.println("Error: El publicador '" + name + "' ya está registrado. No se permiten duplicados");
+                        System.exit(-1);
+                    }
+                    
+                    // Registrar el nombre del publicador para detectar duplicados
+                    publisherNames.put(name, true);
+                    
+                    // Verificar si ya existe un tópico con este nombre
+                    if (broker.findTopic(topicName) == null) {
+                        Publisher pub = new Publisher(name, broker, topicName);
+                        publishers.add(pub);
+                    } else {
+                        System.out.println("Error: El tópico '" + topicName + "' ya existe. No se permiten clonados");
+                        System.exit(-1);
+                    }
                 } else {
                     // Saltamos los datos de suscriptores
                     in.next(); // subType

@@ -4,6 +4,8 @@ public abstract class Subscriber extends Component {
    protected Subscriber() {
       super();
    }  
+
+   
    
    public Subscriber(String name, String topicName) {
       super(name, topicName);

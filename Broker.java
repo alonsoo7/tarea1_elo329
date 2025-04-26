@@ -32,7 +32,7 @@ public class Broker {
          return false; // topic does not exist.
    }
 
-   private Topic findTopic(String topicName) {
+   protected Topic findTopic(String topicName) {
       for (Topic topic:topics) {
          if (topic.hasThisName(topicName)) {
             return topic;
