@@ -6,101 +6,138 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Simulador {
+    private Broker broker;
+    private List<Publisher> publishers;
+    private List<Subscriber> subscribers;
+    
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java Simulador <configFile.txt>");
             System.exit(-1);
         }
-        // 1. Abrir el archivo de configuracion
-        Scanner conf = null;
+        
+        String configFile = args[0];
+        Simulador simulador = new Simulador();
+        simulador.setupSimulator(configFile);
+        simulador.runSimulation();
+    }
+        
+    public void setupSimulator(String configFile) {
+
+        broker = new Broker();
+        publishers = new ArrayList<>();
+        subscribers = new ArrayList<>();
+        
+        // Primera lectura: SOLO PUBLICADORES
         try {
-            conf = new Scanner(new File(args[0]));
+            Scanner in = new Scanner(new File(configFile));
+            
+            while (in.hasNext()) {
+                String tipo = in.next();  // "publicador" o "suscriptor"
+                if (tipo.equals("publicador")) {
+                    String name = in.next();
+                    String topicName = in.next();
+                    // Crear y guardar el publisher
+                    Publisher pub = new Publisher(name, broker, topicName);
+                    publishers.add(pub);
+                } else {
+                    // Saltamos los datos de suscriptores
+                    in.next(); // subType
+                    in.next(); // name
+                    in.next(); // topic
+                    in.next(); // fileOut
+                }
+            }
+            in.close();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + args[0]);
+            e.printStackTrace();
             System.exit(-1);
         }
         
-        // 2. Crear el broker y listas para publishers/subscribers
-        Broker broker = new Broker();
-        List<Publisher> publishers = new ArrayList<>();
-        List<Subscriber> subscribers = new ArrayList<>();
-        
-        // 3. Leer cada linea de config
-        while (conf.hasNext()) {
-            String tipo = conf.next();  // "publicador" o "suscriptor"
-            if (tipo.equals("publicador")) {
-                String name = conf.next();
-                String topicName = conf.next();
-                // Crear el topico en el broker (si no existe)
-                //broker.createTopic(topicName);
-                // Crear y guardar el publisher
-                Publisher pub = new Publisher(name, broker, topicName);
-                publishers.add(pub);
-            }
-            else if (tipo.equals("suscriptor")) {
-                String subType = conf.next();      // "Seguidor", "Registrador" o "Monitor"
-                String name    = conf.next();
-                String topic   = conf.next();
-                String fileOut = conf.next();
-                try {
-                    PrintStream out = new PrintStream(fileOut);
-                    Subscriber sub = null;
-                    if (subType.equals("Seguidor")) {
-                        sub = new Follower(name, topic, out);
-                    } else if (subType.equals("Registrador")) {
-                        sub = new Recorder(name, topic, out);
-                    } else if (subType.equals("Monitor")) {
-                        sub = new Monitor(name, topic, out);
+        // Segunda lectura: SOLO SUSCRIPTORES
+        try {
+            Scanner conf = new Scanner(new File(configFile));
+            
+            while (conf.hasNext()) {
+                String tipo = conf.next();
+                if (tipo.equals("suscriptor")) {
+                    String subType = conf.next();      // "Seguidor", "Registrador" o "Monitor"
+                    String name    = conf.next();
+                    String topic   = conf.next();
+                    String fileOut = conf.next();
+                    try {
+                        PrintStream out = new PrintStream(fileOut);
+                        Subscriber sub = null;
+                        if (subType.equals("Seguidor")) {
+                            sub = new Follower(name, topic, out);
+                        } else if (subType.equals("Registrador")) {
+                            sub = new Recorder(name, topic, out);
+                        } else if (subType.equals("Monitor")) {
+                            sub = new Monitor(name, topic, out);
+                        }
+                        if (sub != null && broker.subscribe(sub)) {
+                            subscribers.add(sub);
+                        } else {
+                            System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                        }
+                    } catch (FileNotFoundException e) {
+                        System.out.println("No se puede crear archivo: " + fileOut);
+                        System.exit(-1);
                     }
-                    if (sub != null && broker.subscribe(sub)) {
-                        subscribers.add(sub);
-                    } else {
-                        System.out.println("Error al suscribir " + name + " al topico " + topic);
-                    }
-                } catch (FileNotFoundException e) {
-                    System.out.println("No se puede crear archivo: " + fileOut);
-                    System.exit(-1);
+                } else {
+                    // Saltamos los datos de publicadores
+                    conf.next(); // name
+                    conf.next(); // topicName
                 }
             }
-            else {
-                // linea malformada
-                System.out.println("Linea de config invalida: " + tipo);
-            }
+            conf.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo de configuración no encontrado: " + configFile);
+            System.exit(-1);
         }
-        conf.close();
-        
-        // 4. Correr la simulacion por teclado
-        Scanner input = new Scanner(System.in);
+    }
+
+    public void runSimulation() {
+
+        Scanner inputEvent = new Scanner(System.in);
+        System.out.println("STREAMERS DISPONIBLES: ");
+        for (Publisher p : publishers) {
+            System.out.println(p.getName());
+        }
         System.out.println("Simulador listo. Formato de evento:");
         System.out.println("<PublisherName> <mensaje o coordenadas>");
         
-        while (input.hasNextLine()) {
-            String line = input.nextLine().trim();
+        while (inputEvent.hasNextLine()) {
+            String line = inputEvent.nextLine().trim();
             if (line.isEmpty()) continue;
-            Scanner scLine = new Scanner(line);
-            String pubName = scLine.next();
+            
+            Scanner lineScanner = new Scanner(line);
+            String pubName = lineScanner.next();
+            
             // Buscar el publisher por nombre
-            Publisher quien = null;
-            for (Publisher p : publishers) {
+            Publisher publicador = null;
+            for (Publisher p : publishers) {    
                 if (p.getName().equals(pubName)) {
-                    quien = p;
+                    publicador = p;
                     break;
                 }
             }
-            if (quien == null) {
+            
+            if (publicador == null) {
                 System.out.println("Unknown Publisher");
-                scLine.close();
+                lineScanner.close();
                 continue;
             }
+            
             // Reconstruir el resto del mensaje
-            StringBuilder msg = new StringBuilder();
-            while (scLine.hasNext()) {
-                msg.append(scLine.next()).append(" ");
+            StringBuilder message = new StringBuilder();
+            while (lineScanner.hasNext()) {
+                message.append(lineScanner.next()).append(" ");
             }
-            scLine.close();
-            // Publicar
-            quien.publishNewEvent(msg.toString().trim());
+
+            publicador.publishNewEvent(message.toString().trim());
+            lineScanner.close();
         }
-        input.close();
+        inputEvent.close();
     }
 }

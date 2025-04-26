@@ -1,15 +1,20 @@
 public class Publisher extends Component {
-    private Topic topic;
 
-    // Constructor: registra nombre + topico en el broker
+    protected Publisher() {} // to ban calls to this constructor
+    
     public Publisher(String name, Broker broker, String topicName) {
-        super(name, topicName);
-        // Esto crea el Topic y lo agrega al broker
-        this.topic = broker.createTopic(topicName);
+       super(name, topicName);
+       this.topic = broker.createTopic(topicName);
     }
-
-    // Publica un mensaje (o coordenadas) en ese topico
-    public void publishNewEvent(String message) {
-        topic.notify(message);
-    }
-}
+ 
+    protected void publishNewEvent(String message) {
+       try {
+         topic.notify(message);
+       } catch (Exception e) {
+         System.err.println("Error al publicar mensaje en topic. Asegurate que son coordenadas validas (x,y) o que el mensaje es correcto: " + e.getMessage());
+       }
+   }
+ 
+    private Topic topic;
+ 
+ }

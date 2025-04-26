@@ -2,6 +2,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Monitor extends Subscriber {
+
     private PrintStream out;
 
     // Constructor
@@ -27,12 +28,14 @@ public class Monitor extends Subscriber {
         sc.close();
 
         // 2. Calcular distancia al origen
-        double distancia = Math.sqrt(x * x + y * y);
+        double distancia = Math.sqrt(x*x + y*y);
 
         // 3. Si supera 500, escribir en el archivo
-        if (distancia > 500) {
+        if (distancia > 500 && 500 >= y && 500 >= x && 0 <= y && 0 <= x) {
             // getName() y getTopicName() vienen de Component
             out.println(getName() + "," + getTopicName() + "," + x + "," + y);
+        } else {
+            
         }
     }
 }

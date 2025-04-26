@@ -1,15 +1,16 @@
 JFLAGS = -g -encoding ISO8859_1  # -encoding in case latin characters are used
 JC = javac
-JVM= java  # Added by Agust�n Gonz�lez
+JVM= java  # Added by Agustín González
+CONFIG = config4.txt
 .SUFFIXES: .java .class
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-CLASSES = T1Stage2.java Broker.java Topic.java \
+CLASSES = Simulador.java Broker.java Topic.java \
 		Publisher.java Subscriber.java \
-	    Recorder.java
+		Follower.java Recorder.java Monitor.java Component.java
 
-MAIN = T1Stage2
+MAIN = Simulador
 
 default: classes
 
