@@ -31,7 +31,6 @@ public class Simulador {
         subscribers = new ArrayList<>();
         subscriberMap = new HashMap<>();
         
-        // Mapa para controlar publicadores duplicados
         Map<String, Boolean> publisherNames = new HashMap<>();
         
         // Primera lectura: SOLO PUBLICADORES
@@ -43,20 +42,18 @@ public class Simulador {
                 if (tipo.equals("publicador")) {
                     String name = in.next();
                     String topicName = in.next();
-                    
-                    // Verificar si ya existe un publicador con este nombre
+                    // logica para verificar si el publicador ya existe
                     if (publisherNames.containsKey(name)) {
                         System.out.println("Error: El publicador '" + name + "' ya está registrado. No se permiten duplicados");
                         System.exit(-1);
                     }
-                    // Registrar el nombre del publicador para detectar duplicados
+
                     publisherNames.put(name, true);
                     
                     Publisher pub = new Publisher(name, broker, topicName);
                     publishers.add(pub);
 
                 } else {
-                    // Saltamos los datos de suscriptores
                     in.next(); // subType
                     in.next(); // name
                     in.next(); // topic
@@ -76,16 +73,14 @@ public class Simulador {
             while (conf.hasNext()) {
                 String tipo = conf.next();
                 if (tipo.equals("suscriptor")) {
-                    String subType = conf.next();      // "Seguidor", "Registrador" o "Monitor"
+                    String subType = conf.next();      // "Seguidor" "Registrador" o "Monitor"
                     String name    = conf.next();
                     String topic   = conf.next();
                     String fileOut = conf.next();
                     
-                    // Comprobamos si ya existe un suscriptor con este nombre
                     Subscriber sub = subscriberMap.get(name);
-                    
+                    // logica para verificar si el suscriptor ya existe
                     if (sub == null) {
-                        // No existe, creamos uno nuevo
                         try {
                             PrintStream out = new PrintStream(fileOut);
                             
@@ -101,23 +96,22 @@ public class Simulador {
                                 subscribers.add(sub);
                                 subscriberMap.put(name, sub); // Guardamos para referencia futura
                             } else {
-                                System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                                System.out.println("Error al suscribir " + name + " al topico " + topic + "Revisar el archivo de configuracion");
+                                System.exit(-1);
                             }
                         } catch (FileNotFoundException e) {
                             System.out.println("No se puede crear archivo: " + fileOut);
                             System.exit(-1);
                         }
                     } else {
-                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo tópico
                         sub.addTopic(topic);
                         if (broker.subscribeToTopic(sub, topic)) {
-                            // Éxito al suscribir al nuevo tópico
+                            // se suscribio al nuevo topico
                         } else {
                             System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
                         }
                     }
                 } else {
-                    // Saltamos los datos de publicadores
                     conf.next(); // name
                     conf.next(); // topicName
                 }
@@ -146,7 +140,6 @@ public class Simulador {
             Scanner lineScanner = new Scanner(line);
             String pubName = lineScanner.next();
             
-            // Buscar el publisher por nombre
             Publisher publicador = null;
             for (Publisher p : publishers) {    
                 if (p.getName().equals(pubName)) {
@@ -161,7 +154,6 @@ public class Simulador {
                 continue;
             }
             
-            // Reconstruir el resto del mensaje
             StringBuilder message = new StringBuilder();
             while (lineScanner.hasNext()) {
                 message.append(lineScanner.next()).append(" ");
