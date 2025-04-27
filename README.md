@@ -1,10 +1,20 @@
 # README - Tarea POO
 
-INTEGRANTES:
+# INTEGRANTES:
 
 - Alonso Toro
 - Paulo Vargas
 - Henriette Stromsvaag
+
+Para el desarrollo de la tarea se trabajó por ramas. Se tendrá que:
+
+- **RAMA MAIN — STAGE 4 (ETAPA FINAL DE LO OBLIGATORIO):** [https://github.com/alonsoo7/tarea1_elo329/tree/main](https://github.com/alonsoo7/tarea1_elo329/tree/main)
+- **RAMA STAGE1 — STAGE1:** [https://github.com/alonsoo7/tarea1_elo329/tree/stage1](https://github.com/alonsoo7/tarea1_elo329/tree/stage1)
+- **RAMA STAGE2 — STAGE2:** [https://github.com/alonsoo7/tarea1_elo329/tree/stage2](https://github.com/alonsoo7/tarea1_elo329/tree/stage2)
+- **RAMA STAGE3 — STAGE3:** [https://github.com/alonsoo7/tarea1_elo329/tree/stage3](https://github.com/alonsoo7/tarea1_elo329/tree/stage3)
+- **RAMA STAGE4 (se hizo merge a main):** [https://github.com/alonsoo7/tarea1_elo329/tree/stage4](https://github.com/alonsoo7/tarea1_elo329/tree/stage4)
+- **RAMA EXTRA!** se realizó las necesidades para el puntaje extra [https://github.com/alonsoo7/tarea1_elo329/tree/StageExtra](https://github.com/alonsoo7/tarea1_elo329/tree/StageExtra)
+
 
 # ENTREGA DE PRIMERA ETAPA
 
@@ -250,41 +260,44 @@ java Simulador <nombre del archivo de config, en este caso config4.txt>
 La ejecución es igual a la forma con makefile.
 
 
-# Desarrollo Stage Extra.
+Desarrollo Stage Extra
 
 Para la etapa extra, se añadió un nuevo tipo de suscriptor llamado Contador. Este suscriptor cuenta la cantidad total de mensajes recibidos y la cantidad de tiempo que ha estado ejecutándose el simulador. Los datos se almacenan en un archivo CSV con el formato:
-\
-<cantidad_mensajes>,<tiempo de ejecución>
-\
-El Contador hereda de Subscriber y añade un contador de mensajes y un temporizador que se activa al iniciar la simulación.
 
+<cantidad_mensajes>,<tiempo de ejecución>
+
+El Contador hereda de Subscriber y añade un contador de mensajes y un temporizador que se activa al iniciar la simulación.
 
 Este desarrollo fue hecho en otra rama del repositorio:
 
 https://github.com/alonsoo7/tarea1_elo329/tree/StageExtra
 
-Y para ejecutarse tambien tiene su makefile asociado. El archivo de configuración que se contempla por predeterminado tiene nombre configEXTRA.txt, de modo que se pueda hacer la ejecución con makefile igual que las etapas anteriores:
+Para ejecutarlo también se dispone de un Makefile asociado. El archivo de configuración predeterminado se llama configEXTRA.txt, de modo que se pueda hacer la ejecución igual que en las etapas anteriores:
 
 make (para compilar)
 
 make run (para ejecutar)
 
-De todas formas, si se quiere ejecutar manualmente se puede hacer:
+De todas formas, si se quiere ejecutar manualmente, se puede hacer:
 
 javac *.java
+java Simulador <nombre del archivo de configuración, en este caso configEXTRA.txt>
 
-java Simulador <nombre del archivo de config, en este caso configEXTRA.txt>
-
-La unica diferencia de funcionamiento, es que ahora hay un nuevo tipo de suscriptor disponible para colocar en el archivo de configuración llamado Contador. por ejemplo, se puede hacer:
+La única diferencia de funcionamiento es que ahora hay un nuevo tipo de suscriptor disponible para colocar en el archivo de configuración llamado Contador. Por ejemplo, se puede escribir:
 
 suscriptor Contador Contador_1 Notificaciones_1 contador1.csv
 
-Luego, este almacena la cantidad de mensajes que ha recibido en total sumando todos los topicos a los que suscribe y la cantidad de tiempo desde que se ejecutó el programa en formato CSV:
+Este suscriptor almacenará:
+
+La cantidad de mensajes que ha recibido en total, sumando todos los tópicos a los que está suscrito.
+
+El tiempo de ejecución desde que se inició el programa.
+
+En formato CSV:
 
 <cantidad_mensajes>,<tiempo de ejecución>
 
 En la documentación se hizo un gráfico con estos datos.
-
 
 
 
