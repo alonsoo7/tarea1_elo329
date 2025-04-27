@@ -118,7 +118,7 @@ public class Simulador {
                             if (broker.subscribeToTopic(sub, topic)) {
                                 // se suscribio al nuevo topico
                             } else {
-                                System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                                System.out.println("Error al suscribir " + name + " al topico adicional " + topic);
                             }
                         }
                     }

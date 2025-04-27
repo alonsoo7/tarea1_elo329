@@ -1,6 +1,7 @@
 publicador Streamer1 Notificaciones_1
-publicador Streamer2 Notificaciones_1
+publicador Streamer2 Notificaciones_2
 publicador GPS_1 Posiciones_1
 suscriptor Seguidor Seguidor_1 Notificaciones_1 seguidor1.txt
 suscriptor Registrador Registrador_1 Posiciones_1 ruta1.csv
 suscriptor Monitor Monitor_1 Posiciones_1 ubicacion1.txt
+suscriptor Seguidor Seguidor_1 Notificaciones_2 seguidor1.txt
