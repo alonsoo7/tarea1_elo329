@@ -204,7 +204,7 @@ El simulador tiene como objetivo permitir la configuración de publicadores y su
 - Los **publicadores** solo pueden publicar en un único tópico, pero varios publicadores pueden compartir un mismo tópico.
 - Los **suscriptores** pueden suscribirse a uno o más tópicos.
 
-#**Archivo de Configuración**:
+# **Archivo de Configuración**:
 - El archivo de configuración contiene líneas con el formato:
      ```
      publicador <nombre> <tópico>
@@ -212,7 +212,7 @@ El simulador tiene como objetivo permitir la configuración de publicadores y su
      ```
    - El tipo de suscriptor puede ser **Monitor**, **Seguidor** o **Registrador**. El sistema permite que múltiples suscriptores se suscriban a un único tópico y que un publicador publique en un solo tópico.
 
-#**Ejecución del simulador**:
+# **Ejecución del simulador**:
 
 Para la ejecución final del Simulador, se creó un makefile, donde se ejecuta el simulador con un archivo de configuración que por defecto debe llamarse config4.txt. Para esto, se debe ejecutar:
 
