@@ -192,7 +192,7 @@ La estructura final del proyecto está compuesta por los siguientes archivos en 
 
 ## Funcionalidad
 
-El simulador tiene como objetivo permitir la configuración de publicadores y suscriptores (de diferentes tipos), donde los **publicadores** envían mensajes y los **suscriptores** los reciben y almacen en archivos de configuración según que tipo de suscriptor sean. Solo hay un tipo de publicador.
+El simulador tiene como objetivo permitir la configuración de publicadores y suscriptores (de diferentes tipos), donde los **publicadores** envían mensajes a sus tópicos correspondientes y los **suscriptores** a esos tópicos los reciben y almacen en archivos de configuración según que tipo de suscriptor sean. Solo hay un tipo de publicador.
 
 
 # Tipos de suscriptores
