@@ -2,9 +2,9 @@
 
 INTEGRANTES:
 
-Alonso Toro
-Paulo Vargas
-Henriette Stromsvaag
+- Alonso Toro
+- Paulo Vargas
+- Henriette Stromsvaag
 
 # ENTREGA DE PRIMERA ETAPA
 
