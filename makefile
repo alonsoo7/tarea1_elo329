@@ -8,7 +8,7 @@ CONFIG = configEXTRA.txt
 
 CLASSES = Simulador.java Broker.java Topic.java \
 		Publisher.java Subscriber.java \
-		Follower.java Recorder.java Monitor.java Component.java
+		Follower.java Recorder.java Monitor.java Component.java Contador.java
 
 MAIN = Simulador
 
