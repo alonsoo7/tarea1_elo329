@@ -1,5 +1,10 @@
 # README - Tarea POO
 
+INTEGRANTES:
+
+Alonso Toro
+Paulo Vargas
+Henriette Stromsvaag
 
 # ENTREGA DE PRIMERA ETAPA
 
@@ -243,5 +248,42 @@ java Simulador <nombre del archivo de config, en este caso config4.txt>
 
 
 La ejecución es igual a la forma con makefile.
+
+
+# Desarrollo Stage Extra.
+
+Para la etapa extra, se añadió un nuevo tipo de suscriptor llamado Contador. Este suscriptor cuenta la cantidad total de mensajes recibidos y la cantidad de tiempo que ha estado ejecutándose el simulador. Los datos se almacenan en un archivo CSV con el formato:
+<cantidad_mensajes>,<tiempo de ejecución>
+El Contador hereda de Subscriber y añade un contador de mensajes y un temporizador que se activa al iniciar la simulación.
+
+
+Este desarrollo fue hecho en otra rama del repositorio:
+
+https://github.com/alonsoo7/tarea1_elo329/tree/StageExtra
+
+Y para ejecutarse tambien tiene su makefile asociado. El archivo de configuración que se contempla por predeterminado tiene nombre configEXTRA.txt, de modo que se pueda hacer la ejecución con makefile igual que las etapas anteriores:
+
+make (para compilar)
+
+make run (para ejecutar)
+
+De todas formas, si se quiere ejecutar manualmente se puede hacer:
+
+javac *.java
+
+java Simulador <nombre del archivo de config, en este caso configEXTRA.txt>
+
+La unica diferencia de funcionamiento, es que ahora hay un nuevo tipo de suscriptor disponible para colocar en el archivo de configuración llamado Contador. por ejemplo, se puede hacer:
+
+suscriptor Contador Contador_1 Notificaciones_1 contador1.csv
+
+Luego, este almacena la cantidad de mensajes que ha recibido en total sumando todos los topicos a los que suscribe y la cantidad de tiempo desde que se ejecutó el programa en formato CSV:
+
+<cantidad_mensajes>,<tiempo de ejecución>
+
+En la documentación se hizo un gráfico con estos datos.
+
+
+
 
 
