@@ -120,16 +120,16 @@ public class Simulador {
                             System.exit(-1);
                         }
                     } else {
-                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo tópico
-                        sub.addTopic(topic);
-                        if (broker.subscribeToTopic(sub, topic)) {
-                            // Éxito al suscribir al nuevo tópico
-                        } else {
-                            System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                        if(!sub.getTopicNames().contains(topic)){ // manejar posible doble suscripcion a un mismo topico
+                            sub.addTopic(topic);
+                            if (broker.subscribeToTopic(sub, topic)) {
+                                // se suscribio al nuevo topico
+                            } else {
+                                System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                            }
                         }
                     }
                 } else {
-                    // Saltamos los datos de publicadores
                     conf.next(); // name
                     conf.next(); // topicName
                 }
