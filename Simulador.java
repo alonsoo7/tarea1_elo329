@@ -130,6 +130,7 @@ public class Simulador {
                         }
                     }
                 } else {
+                    // Saltamos los datos de publicadores
                     conf.next(); // name
                     conf.next(); // topicName
                 }
