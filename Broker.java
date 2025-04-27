@@ -5,6 +5,7 @@ public class Broker {
    @SuppressWarnings("FieldMayBeFinal")
    private ArrayList<Topic> topics;
 
+   //Inicializa el broker con lista de topics vacia.
    @SuppressWarnings("Convert2Diamond")
    public Broker() {
       topics = new ArrayList<Topic>();
@@ -16,8 +17,9 @@ public class Broker {
       return topic;
    }
 
+   
    public boolean subscribe(Subscriber sub){
-      // Suscribir al tópico principal (para compatibilidad)
+      // Suscribir al topico principal (para compatibilidad)
       String topicName = sub.getTopicName();
       return subscribeToTopic(sub, topicName);
    }
@@ -25,13 +27,14 @@ public class Broker {
    public boolean subscribeToTopic(Subscriber sub, String topicName){
       Topic topic = findTopic(topicName);
       
-      if (topic != null) { // si el tópico existe, suscribe
-         topic.subscribe(sub);
+      if (topic != null) { // si el topico existe, suscribe
+         topic.subscribe(sub); 
          return true;
       } else 
-         return false; // topic does not exist.
+         return false; // topico no encontrado
    }
 
+   //Busca un topic por nombre
    protected Topic findTopic(String topicName) {
       for (Topic topic:topics) {
          if (topic.hasThisName(topicName)) {

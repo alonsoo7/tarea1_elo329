@@ -8,23 +8,31 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Simulador {
+
+    //Administra los temas y suscripciones
     private Broker broker;
+    //Lista de todos los Publishers registrados
     private List<Publisher> publishers;
+    //Lista de todos los Subscribers registrados
     private List<Subscriber> subscribers;
+    //Mapa para buscar suscriptores por nombre y evitar duplicados
     private Map<String, Subscriber> subscriberMap;
     
     public static void main(String[] args) {
+        //Validar parametros
         if (args.length != 1) {
             System.out.println("Usage: java Simulador <configFile.txt>");
             System.exit(-1);
         }
         
+        //Inicializar y ejecutar
         String configFile = args[0];
         Simulador simulador = new Simulador();
         simulador.setupSimulator(configFile);
         simulador.runSimulation();
     }
         
+    //Carga publicadores y suscriptores
     public void setupSimulator(String configFile) {
         broker = new Broker();
         publishers = new ArrayList<>();
@@ -46,7 +54,7 @@ public class Simulador {
                     
                     // Verificar si ya existe un publicador con este nombre
                     if (publisherNames.containsKey(name)) {
-                        System.out.println("Error: El publicador '" + name + "' ya está registrado. No se permiten duplicados");
+                        System.out.println("Error: El publicador '" + name + "' ya esta registrado. No se permiten duplicados");
                         System.exit(-1);
                     }
                     // Registrar el nombre del publicador para detectar duplicados
@@ -97,23 +105,24 @@ public class Simulador {
                                 sub = new Monitor(name, topic, out);
                             }
                             
+                            
                             if (sub != null && broker.subscribe(sub)) {
                                 subscribers.add(sub);
                                 subscriberMap.put(name, sub); // Guardamos para referencia futura
                             } else {
-                                System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                                System.out.println("Error al suscribir " + name + " al topico " + topic);
                             }
                         } catch (FileNotFoundException e) {
                             System.out.println("No se puede crear archivo: " + fileOut);
                             System.exit(-1);
                         }
                     } else {
-                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo tópico
+                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo topico
                         sub.addTopic(topic);
                         if (broker.subscribeToTopic(sub, topic)) {
-                            // Éxito al suscribir al nuevo tópico
+                            // exito al suscribir al nuevo topico
                         } else {
-                            System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                            System.out.println("Error al suscribir " + name + " al topico adicional " + topic);
                         }
                     }
                 } else {
@@ -122,23 +131,31 @@ public class Simulador {
                     conf.next(); // topicName
                 }
             }
+
+          
             conf.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Archivo de configuración no encontrado: " + configFile);
+            System.out.println("Archivo de configuracion no encontrado: " + configFile);
             System.exit(-1);
         }
     }
 
     public void runSimulation() {
 
+        //Crear scanner para eventos desde consola
         Scanner inputEvent = new Scanner(System.in);
+
+        //Mostrar lista de publicadores disponibles
         System.out.println("STREAMERS DISPONIBLES: ");
         for (Publisher p : publishers) {
             System.out.println(p.getName());
         }
+
+        //Indicar formato de entrada al usuario
         System.out.println("Simulador listo. Formato de evento:");
         System.out.println("<PublisherName> <mensaje o coordenadas>");
         
+        //Bucle para procesar lineas mientras haya entrada
         while (inputEvent.hasNextLine()) {
             String line = inputEvent.nextLine().trim();
             if (line.isEmpty()) continue;
@@ -155,6 +172,7 @@ public class Simulador {
                 }
             }
             
+            // Si no se encuentra el publisher, mostrar error y continuar
             if (publicador == null) {
                 System.out.println("Unknown Publisher");
                 lineScanner.close();
@@ -167,6 +185,7 @@ public class Simulador {
                 message.append(lineScanner.next()).append(" ");
             }
 
+            // Publicar el mensaje en el publisher
             publicador.publishNewEvent(message.toString().trim());
             lineScanner.close();
         }
