@@ -1,2 +1,0 @@
-MiRegistrador,Posiciones,50,80
-MiRegistrador,Posiciones,400,300

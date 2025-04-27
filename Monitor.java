@@ -13,7 +13,7 @@ public class Monitor extends Subscriber {
 
     @Override
     public void update(String message, String fromTopic) {
-        // 1. Parsear coordenadas
+        //1.Extraer coordenadas
         Scanner sc = new Scanner(message);
         if (!sc.hasNextInt()) {
             sc.close();
@@ -37,4 +37,3 @@ public class Monitor extends Subscriber {
         }
     }
 }
-
