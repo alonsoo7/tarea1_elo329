@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.io.PrintStream;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.io.PrintStream;
 
 
 public class Simulador {
@@ -56,7 +52,7 @@ public class Simulador {
                     
                     // Verificar si ya existe un publicador con este nombre
                     if (publisherNames.containsKey(name)) {
-                        System.out.println("Error: El publicador '" + name + "' ya está registrado. No se permiten duplicados");
+                        System.out.println("Error: El publicador '" + name + "' ya esta registrado. No se permiten duplicados");
                         System.exit(-1);
                     }
                     // Registrar el nombre del publicador para detectar duplicados
@@ -113,19 +109,19 @@ public class Simulador {
                                 subscribers.add(sub);
                                 subscriberMap.put(name, sub); // Guardamos para referencia futura
                             } else {
-                                System.out.println("Error al suscribir " + name + " al tópico " + topic);
+                                System.out.println("Error al suscribir " + name + " al topico " + topic);
                             }
                         } catch (FileNotFoundException e) {
                             System.out.println("No se puede crear archivo: " + fileOut);
                             System.exit(-1);
                         }
                     } else {
-                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo tópico
+                        // Ya existe un suscriptor con este nombre, lo suscribimos al nuevo topico
                         sub.addTopic(topic);
                         if (broker.subscribeToTopic(sub, topic)) {
-                            // Éxito al suscribir al nuevo tópico
+                            // exito al suscribir al nuevo topico
                         } else {
-                            System.out.println("Error al suscribir " + name + " al tópico adicional " + topic);
+                            System.out.println("Error al suscribir " + name + " al topico adicional " + topic);
                         }
                     }
                 } else {
@@ -136,7 +132,7 @@ public class Simulador {
             }
             conf.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Archivo de configuración no encontrado: " + configFile);
+            System.out.println("Archivo de configuracion no encontrado: " + configFile);
             System.exit(-1);
         }
     }

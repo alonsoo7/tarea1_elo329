@@ -1,7 +1,8 @@
 public class Publisher extends Component {
 
-    protected Publisher() {} // to ban calls to this constructor
+    protected Publisher() {} //Evitar que se llame a este constructor 
     
+    //Si el topico no existia, se crea; si ya existe, se reutiliza.
     public Publisher(String name, Broker broker, String topicName) {
        super(name, topicName);
        if (broker.findTopic(topicName) == null) {
@@ -13,9 +14,10 @@ public class Publisher extends Component {
  
     @Override
     public void addTopic(String topic) {
-         // solo para evitar que se ponga mas topico. no hace nada
+         // solo para evitar que se hagan mas topicos. no hace nada
     }
  
+    //Informa error si el mensaje no es valido al publica el topico 
     protected void publishNewEvent(String message) {
        try {
          topic.notify(message, topicName);

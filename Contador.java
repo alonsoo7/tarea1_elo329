@@ -5,7 +5,7 @@ public class Contador extends Subscriber {
     private long startTime;
     private PrintStream out;
 
-    
+    //contructor
     public Contador(String name, String topicName, PrintStream out, long startTime) {
         super(name, topicName);
         this.out = out;
