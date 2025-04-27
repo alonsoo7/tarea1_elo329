@@ -1,5 +1,7 @@
 # README - Tarea POO
 
+toro.alonso-stromsvaag.henriette-vargas.paulo-Tarea1.2025.1
+
 # INTEGRANTES:
 
 - Alonso Toro
