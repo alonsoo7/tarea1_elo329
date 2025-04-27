@@ -253,7 +253,9 @@ La ejecución es igual a la forma con makefile.
 # Desarrollo Stage Extra.
 
 Para la etapa extra, se añadió un nuevo tipo de suscriptor llamado Contador. Este suscriptor cuenta la cantidad total de mensajes recibidos y la cantidad de tiempo que ha estado ejecutándose el simulador. Los datos se almacenan en un archivo CSV con el formato:
+\
 <cantidad_mensajes>,<tiempo de ejecución>
+\
 El Contador hereda de Subscriber y añade un contador de mensajes y un temporizador que se activa al iniciar la simulación.
 
 
