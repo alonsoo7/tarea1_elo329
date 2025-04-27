@@ -1,7 +1,7 @@
 JFLAGS = -g -encoding ISO8859_1  # -encoding in case latin characters are used
 JC = javac
 JVM= java  # Added by Agustín González
-CONFIG = config4.txt
+CONFIG = configEXTRA.txt
 .SUFFIXES: .java .class
 .java.class:
 	$(JC) $(JFLAGS) $*.java
