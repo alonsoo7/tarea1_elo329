@@ -1,0 +1,3 @@
+publicador Streamer_1 Notificaciones_1
+suscriptor Seguidor Seguidor_1 Notificaciones_1 seguidor_1.txt
+suscriptor Seguidor Seguidor_2 Notificaciones_1 seguidor_2.txt
